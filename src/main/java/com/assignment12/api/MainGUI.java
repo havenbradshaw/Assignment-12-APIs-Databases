@@ -1,11 +1,13 @@
 package com.assignment12.api;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class MainGUI extends JFrame {
     private final CountryTableModel tableModel = new CountryTableModel();
@@ -76,11 +78,9 @@ public class MainGUI extends JFrame {
                         setStatus("Fetched and saved " + res.size() + " countries.");
                     } catch (SQLException ex) {
                         setStatus("DB error: " + ex.getMessage());
-                        ex.printStackTrace();
                     }
                 } catch (Exception ex) {
                     setStatus("API error: " + ex.getMessage());
-                    ex.printStackTrace();
                 }
             }
         }.execute();
@@ -100,9 +100,8 @@ public class MainGUI extends JFrame {
                     List<Country> res = get();
                     tableModel.setData(res);
                     setStatus("Loaded " + res.size() + " rows from DB.");
-                } catch (Exception ex) {
+                } catch (InterruptedException | ExecutionException ex) {
                     setStatus("DB error: " + ex.getMessage());
-                    ex.printStackTrace();
                 }
             }
         }.execute();
@@ -124,12 +123,12 @@ public class MainGUI extends JFrame {
                     List<Country> res = get();
                     tableModel.setData(res);
                     setStatus("Found " + res.size() + " rows for '" + q + "'.");
-                } catch (Exception ex) {
+                } catch (InterruptedException | ExecutionException ex) {
                     setStatus("DB error: " + ex.getMessage());
-                    ex.printStackTrace();
                 }
             }
-        }.execute();
+        }
+        .execute();
     }
 
     private void onExport(ActionEvent e) {
@@ -148,7 +147,8 @@ public class MainGUI extends JFrame {
             @Override
             protected void done() {
                 try { get(); setStatus("Export complete: " + out.getAbsolutePath()); }
-                catch (Exception ex) { setStatus("Export failed: " + ex.getMessage()); ex.printStackTrace(); }
+                catch (InterruptedException | ExecutionException ex) 
+                { setStatus("Export failed: " + ex.getMessage()); ex.printStackTrace(); }
             }
         }.execute();
     }
