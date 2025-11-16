@@ -37,9 +37,18 @@
           <mainClass>com.assignment12.api.APIProgram</mainClass>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-maven-plugin</artifactId>
+        <version>0.0.8</version>
+        <configuration>
+          <mainClass>com.assignment12.api.APIProgram</mainClass>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <properties>
+    <javafx.version>20.0.2</javafx.version>
     <maven.compiler.target>11</maven.compiler.target>
     <maven.compiler.source>11</maven.compiler.source>
   </properties>
