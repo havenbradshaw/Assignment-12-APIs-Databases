@@ -53,7 +53,7 @@ Notes about dependencies
 
 This project was assisted and refactored using an AI coding assistant to port the GUI from Swing to JavaFX and update build tooling.
 
-- Automated tasks performed: added OpenJFX dependencies and the `javafx-maven-plugin` to `pom.xml`; created a new `MainFX` JavaFX `Application` that mirrors the original Swing behavior; updated `APIProgram` to launch JavaFX and provide a shared `DBManager` instance.
+- Automated tasks performed: added OpenJFX dependencies and the `javafx-maven-plugin` to `pom.xml`; created a new `MainFX` JavaFX `Application`; updated `APIProgram` to launch JavaFX and provide a shared `DBManager` instance.
 - Design rationale: preserve the existing data layer (`DBManager`, `Country`, `CSVExporter`) and use background tasks for IO so the UI remains responsive. The port preserves original behavior (fetch → upsert → list/search → export) while switching UI toolkit.
 - Limitations and risks: the AI made a best-effort port, but manual review is recommended for UI polish, accessibility, input validation, and concurrency edge cases. Packaging JavaFX into a single shaded jar can produce warnings about modular/native resources; prefer `mvn javafx:run` for development or produce a platform-specific runtime image for distribution.
 - Suggested next steps (manual): review `MainFX` for styling and UX improvements, add unit tests for `DBManager` and `APIClient`, and consider `jpackage` or `jlink` to create a distributable native image that includes JavaFX native libraries.
