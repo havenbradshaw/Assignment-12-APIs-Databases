@@ -3,7 +3,7 @@
 This project fetches country data from the REST Countries API, parses the JSON with Gson, stores the relevant fields (name, population, region) into a SQLite database using JDBC, and exposes a small Swing GUI to fetch, search, refresh, and export results to CSV.
 
 Features
-- Fetch all countries from the REST Countries API and persist them into a local SQLite database (upsert semantics).
+- Fetch all countries from the REST Countries API and populate them into a local SQLite database (upsert semantics).
 - Browse stored countries in a JTable.
 - Search by name (case-insensitive, partial match) against the DB.
 - Refresh view from DB.
@@ -40,5 +40,3 @@ Design notes and reflection
 Files added
 - `pom.xml` — Maven project file and dependencies
 - `src/main/java/com/assignment12/api/*` — Java sources (client, DB manager, GUI, helpers)
-
-If you'd like, I can run a quick compile and attempt to launch the GUI here and report any build errors.
