@@ -24,37 +24,38 @@ public class APIClient {
             throw new RuntimeException("API returned HTTP " + code);
         }
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        JsonElement root = JsonParser.parseReader(br);
-        br.close();
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+            JsonElement root = JsonParser.parseReader(br);
+            br.close();
 
-        List<Country> result = new ArrayList<>();
-        if (!root.isJsonArray()) return result;
+            List<Country> result = new ArrayList<>();
+            if (!root.isJsonArray()) return result;
 
-        JsonArray arr = root.getAsJsonArray();
-        for (JsonElement el : arr) {
-            if (!el.isJsonObject()) continue;
-            JsonObject obj = el.getAsJsonObject();
+            JsonArray arr = root.getAsJsonArray();
+            for (JsonElement el : arr) {
+                if (!el.isJsonObject()) continue;
+                JsonObject obj = el.getAsJsonObject();
 
-            String name = "";
-            try {
-                JsonObject nameObj = obj.getAsJsonObject("name");
-                if (nameObj != null && nameObj.has("common")) {
-                    name = nameObj.get("common").getAsString();
+                String name = "";
+                try {
+                    JsonObject nameObj = obj.getAsJsonObject("name");
+                    if (nameObj != null && nameObj.has("common")) {
+                        name = nameObj.get("common").getAsString();
+                    }
+                } catch (Exception ignore) {}
+
+                long population = 0;
+                try { population = obj.has("population") ? obj.get("population").getAsLong() : 0; } catch (Exception ignore) {}
+
+                String region = "";
+                try { region = obj.has("region") && !obj.get("region").isJsonNull() ? obj.get("region").getAsString() : ""; } catch (Exception ignore) {}
+
+                if (name != null && !name.isEmpty()) {
+                    result.add(new Country(name, population, region));
                 }
-            } catch (Exception ignore) {}
-
-            long population = 0;
-            try { population = obj.has("population") ? obj.get("population").getAsLong() : 0; } catch (Exception ignore) {}
-
-            String region = "";
-            try { region = obj.has("region") && !obj.get("region").isJsonNull() ? obj.get("region").getAsString() : ""; } catch (Exception ignore) {}
-
-            if (name != null && !name.isEmpty()) {
-                result.add(new Country(name, population, region));
             }
-        }
 
-        return result;
+            return result;
+        }
     }
 }

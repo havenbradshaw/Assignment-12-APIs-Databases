@@ -13,7 +13,6 @@ public class APIProgram {
             db = new DBManager(dbFile.getAbsolutePath());
         } catch (SQLException ex) {
             System.err.println("Failed to open DB: " + ex.getMessage());
-            ex.printStackTrace();
             System.exit(1);
             return;
         }
